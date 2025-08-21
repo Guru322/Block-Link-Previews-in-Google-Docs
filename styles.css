@@ -1,0 +1,9 @@
+
+.docs-link-bubble,
+.docs-multilinkbubble-bubble,
+.docs-linkbubble-bubble,
+.docs-bubble.appsElementsLinkPreview {
+  display: none !important;
+  visibility: hidden !important;
+}
+

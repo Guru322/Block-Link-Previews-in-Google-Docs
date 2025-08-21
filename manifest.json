@@ -1,0 +1,13 @@
+{
+  "manifest_version": 3,
+  "name": "Block Google Docs Link Preview ",
+  "version": "1.0",
+  "description": "An extension to block the link preview pop-up in Google Docs.",
+  "content_scripts": [
+    {
+      "matches": ["https://docs.google.com/*"],
+      "css": ["styles.css"]
+    }
+  ]
+}
+
