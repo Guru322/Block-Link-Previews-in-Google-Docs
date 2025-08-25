@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Disable Link Preview in Google Docs",
-  "version": "1.0",
+  "version": "2.0",
   "description": "Prevents distracting link preview pop-ups in Google Docs for a cleaner experience.",
   "permissions": ["storage"],
   "host_permissions": [
