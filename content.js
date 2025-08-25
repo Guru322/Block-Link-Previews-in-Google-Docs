@@ -7,7 +7,8 @@ const setBlockingClass = (enabled) => {
 };
 
 chrome.storage.local.get("isEnabled", (data) => {
-  setBlockingClass(data.isEnabled);
+  const enabled = data.isEnabled === undefined ? true : data.isEnabled;
+  setBlockingClass(enabled);
 });
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
