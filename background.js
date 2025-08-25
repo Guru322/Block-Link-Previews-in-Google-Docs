@@ -1,44 +1,30 @@
-const styles = {
-  files: ["styles.css"],
-};
-
 chrome.runtime.onInstalled.addListener(() => {
-  chrome.storage.local.set({ isEnabled: true });
+  chrome.storage.local.set({ isEnabled: false });
 });
 
 chrome.action.onClicked.addListener(async (tab) => {
-  if (tab.url.startsWith("https://docs.google.com/")) {
+  if (tab.url && tab.url.startsWith("https://docs.google.com/")) {
     const { isEnabled } = await chrome.storage.local.get("isEnabled");
     const newIsEnabled = !isEnabled;
-    chrome.storage.local.set({ isEnabled: newIsEnabled });
+    await chrome.storage.local.set({ isEnabled: newIsEnabled });
 
-    if (newIsEnabled) {
-      await chrome.scripting.insertCSS({
-        target: { tabId: tab.id },
-        ...styles,
-      });
-      await chrome.action.setIcon({
-        path: {
+    const iconPath = newIsEnabled
+      ? {
           "16": "icons/icon16.png",
           "48": "icons/icon48.png",
           "128": "icons/icon128.png",
-        },
-        tabId: tab.id,
-      });
-    } else {
-      await chrome.scripting.removeCSS({
-        target: { tabId: tab.id },
-        ...styles,
-      });
-      await chrome.action.setIcon({
-        path: {
+        }
+      : {
           "16": "icons/icon16-disabled.png",
           "48": "icons/icon48-disabled.png",
           "128": "icons/icon128-disabled.png",
-        },
-        tabId: tab.id,
-      });
-    }
+        };
+    await chrome.action.setIcon({ path: iconPath, tabId: tab.id });
+
+    await chrome.tabs.sendMessage(tab.id, {
+      action: "toggle",
+      isEnabled: newIsEnabled,
+    });
   }
 });
 
@@ -49,28 +35,17 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
     tab.url.startsWith("https://docs.google.com/")
   ) {
     const { isEnabled } = await chrome.storage.local.get("isEnabled");
-    if (isEnabled) {
-      await chrome.scripting.insertCSS({
-        target: { tabId: tabId },
-        ...styles,
-      });
-      await chrome.action.setIcon({
-        path: {
+    const iconPath = isEnabled
+      ? {
           "16": "icons/icon16.png",
           "48": "icons/icon48.png",
           "128": "icons/icon128.png",
-        },
-        tabId: tabId,
-      });
-    } else {
-      await chrome.action.setIcon({
-        path: {
+        }
+      : {
           "16": "icons/icon16-disabled.png",
           "48": "icons/icon48-disabled.png",
           "128": "icons/icon128-disabled.png",
-        },
-        tabId: tabId,
-      });
-    }
+        };
+    await chrome.action.setIcon({ path: iconPath, tabId: tabId });
   }
 });
