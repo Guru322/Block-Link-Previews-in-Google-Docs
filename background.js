@@ -1,5 +1,5 @@
 chrome.runtime.onInstalled.addListener(() => {
-  chrome.storage.local.set({ isEnabled: false });
+  chrome.storage.local.set({ isEnabled: true });
 });
 
 chrome.action.onClicked.addListener(async (tab) => {
