@@ -4,6 +4,9 @@
   "version": "1.0",
   "description": "Prevents distracting link preview pop-ups in Google Docs for a cleaner experience.",
   "permissions": ["storage"],
+  "host_permissions": [
+    "https://docs.google.com/*"
+  ],
   "background": {
     "service_worker": "background.js"
   },
